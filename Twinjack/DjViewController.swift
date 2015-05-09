@@ -76,6 +76,7 @@ class DjViewController: NSViewController, LiveDataDelegate, TrackDelegate {
         liveData.updateProfileInfo(swifter, dj:dj)
         lowerScrimView.wantsLayer = true
         lowerScrimView.alphaValue = 0.8
+
     }
     
     func wakeSpotify(){
@@ -204,7 +205,7 @@ class DjViewController: NSViewController, LiveDataDelegate, TrackDelegate {
         trackLabel.stringValue = track.name!
         likesLabel.integerValue = 0
         
-        println("Play \(track.name)")
+        println("Play \(track.name!)")
         liveData.trackStarted(track,
                               dj:self.dj)
     }

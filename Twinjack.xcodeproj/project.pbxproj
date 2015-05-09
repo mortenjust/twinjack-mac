@@ -26,7 +26,6 @@
 		C823EEC11AE08B200045D7B7 /* DjViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C823EEBF1AE08B200045D7B7 /* DjViewController.swift */; };
 		C823EEC21AE08B200045D7B7 /* DjViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C823EEC01AE08B200045D7B7 /* DjViewController.xib */; };
 		C823EEC41AE08BCB0045D7B7 /* ViewControllerAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C823EEC31AE08BCB0045D7B7 /* ViewControllerAnimator.swift */; };
-		C839D2C11AE02439005CE282 /* TwitterAuthHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C839D2C01AE02439005CE282 /* TwitterAuthHelper.m */; };
 		C839D2C31AE02758005CE282 /* Social.swift in Sources */ = {isa = PBXBuildFile; fileRef = C839D2C21AE02758005CE282 /* Social.swift */; };
 		C8499B1D1AF3FD3200EA994C /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8499B1C1AF3FD3200EA994C /* Util.swift */; };
 		C85FCE9F1AE0A67B0081AC10 /* NeedSocialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85FCE9D1AE0A67B0081AC10 /* NeedSocialViewController.swift */; };
@@ -146,7 +145,6 @@
 		C80F66531ADF563D00277D77 /* MasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		C80F66541ADF563D00277D77 /* MasterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MasterViewController.xib; sourceTree = "<group>"; };
 		C80F66571ADF5B9600277D77 /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Track.swift; path = Twinjack/Track.swift; sourceTree = "<group>"; };
-		C80F66591ADF641000277D77 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
 		C80F665B1ADF644800277D77 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		C80F665D1ADF644F00277D77 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		C80F665F1ADF645800277D77 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -157,8 +155,6 @@
 		C823EEBF1AE08B200045D7B7 /* DjViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DjViewController.swift; sourceTree = "<group>"; };
 		C823EEC01AE08B200045D7B7 /* DjViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DjViewController.xib; sourceTree = "<group>"; };
 		C823EEC31AE08BCB0045D7B7 /* ViewControllerAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerAnimator.swift; sourceTree = "<group>"; };
-		C839D2BF1AE02439005CE282 /* TwitterAuthHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterAuthHelper.h; sourceTree = "<group>"; };
-		C839D2C01AE02439005CE282 /* TwitterAuthHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAuthHelper.m; sourceTree = "<group>"; };
 		C839D2C21AE02758005CE282 /* Social.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Social.swift; path = Twinjack/Social.swift; sourceTree = "<group>"; };
 		C8499B1C1AF3FD3200EA994C /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		C8520BB41AE5FD7500FC5077 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = ../AF/Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
@@ -216,7 +212,6 @@
 				C80F665F1ADF645800277D77 /* CFNetwork.framework */,
 				C80F665D1ADF644F00277D77 /* libc++.dylib */,
 				C80F665B1ADF644800277D77 /* libicucore.dylib */,
-				C80F66591ADF641000277D77 /* Firebase.framework */,
 				C80F66571ADF5B9600277D77 /* Track.swift */,
 				C80F66351ADF55EC00277D77 /* Twinjack */,
 				C80F66461ADF55EC00277D77 /* TwinjackTests */,
@@ -243,8 +238,6 @@
 				C85FCEA11AE0A74C0081AC10 /* openTwitterPrefs.scpt */,
 				C823EEBF1AE08B200045D7B7 /* DjViewController.swift */,
 				C823EEC01AE08B200045D7B7 /* DjViewController.xib */,
-				C839D2BF1AE02439005CE282 /* TwitterAuthHelper.h */,
-				C839D2C01AE02439005CE282 /* TwitterAuthHelper.m */,
 				C80F66681ADF64CB00277D77 /* LiveData.swift */,
 				C80F66531ADF563D00277D77 /* MasterViewController.swift */,
 				C823EEC31AE08BCB0045D7B7 /* ViewControllerAnimator.swift */,
@@ -530,7 +523,6 @@
 				C85FCE9F1AE0A67B0081AC10 /* NeedSocialViewController.swift in Sources */,
 				C839D2C31AE02758005CE282 /* Social.swift in Sources */,
 				C80F66691ADF64CB00277D77 /* LiveData.swift in Sources */,
-				C839D2C11AE02439005CE282 /* TwitterAuthHelper.m in Sources */,
 				C823EEC41AE08BCB0045D7B7 /* ViewControllerAnimator.swift in Sources */,
 				C80F66581ADF5B9600277D77 /* Track.swift in Sources */,
 				C80F66671ADF64A100277D77 /* temp.m in Sources */,
@@ -597,6 +589,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
@@ -642,6 +635,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;

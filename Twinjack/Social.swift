@@ -12,30 +12,7 @@ import Accounts
 import SwifterMac
 
 class Social {
-
-    
     init(){
-
-    }
-    
-    
-    func authTwitterREMOVE(){ // TODO: handle retun
-        let failureHandler: ((NSError) -> Void) = {
-            error in
-            
-            println(error.localizedDescription)
-        }
-        
-        let swifter = Swifter(consumerKey: "TuhRXTbnWzOHwjpLvEnQ0jFtH", consumerSecret: "sxvfBXkF0Hr3pSdDpOBLmV9HxvMtBqqY9xByBx0QJjVdWEPPCY")
-        
-        swifter.authorizeWithCallbackURL(NSURL(string: "twinjack://success")!, success: {
-            accessToken, response in
-            
-            self.saveUserToken(accessToken!)
-            
-            println("Successfully authorized")
-        
-            }, failure: failureHandler)
     }
     
     // token helpers

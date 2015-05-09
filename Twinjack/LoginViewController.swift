@@ -35,6 +35,7 @@ class LoginViewController: NSViewController {
             self.delegate.loginSuccessful()
             },failure: {
                 error in
+                println("# login error")
                 println(error)
             }
         )

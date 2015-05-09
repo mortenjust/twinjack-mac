@@ -44,24 +44,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         if social.fetchUserToken() != nil {
             self.swifter.client.credential = social.fetchUserToken()
             user = self.social.fetchUserQData()
-            
             let tokenKey = self.swifter.client.credential?.accessToken?.key
             let tokenSecret = self.swifter.client.credential?.accessToken?.secret
             let userId = user["userID"] as! String
             let screenName = user["screenName"] as! String
-            
             let pars = ["key": tokenKey!, "secret":tokenSecret!]
-            
-            println(pars)
             println("welcome back")
-            println(self.user)
             self.enterDjBooth()
-            
         } else {
             println("who are you")
             showLoginView()
         }
-
 }
 
     

@@ -46,14 +46,15 @@ class Track: NSObject {
         
         Alamofire.request(.GET, url, parameters: nil).response { (req, res, json, error) in
             println("json back")
-            println(error?.debugDescription)
-            println(res)
+            if error != nil {
+                println("##### Trying to get album image from spotify, but got this error")
+                println(error?.debugDescription)            
+            }
             var subJson = SwiftyJay.JSON(data:json! as! NSData)
             if var albumImageUrl = subJson["album"]["images"][0]["url"].string {
                 Alamofire.request(.GET, albumImageUrl, parameters:nil).response { (req, res, data, error) in
                     let albumImage = NSImage(data: data! as! NSData)
                     // Mark:Callback
-                    // TODO: fix crash caused by playing spotify:track:6hX9MN0dUFyY6QqSlUOq7N
                     callback(image: albumImage!)
                 }
             }
@@ -65,7 +66,7 @@ class Track: NSObject {
     init(info:[NSObject : AnyObject]){
         super.init()
         
-        println(info)
+        //println(info)
         name = info["Name"] as? String
         popularity = info["Popularity"] as? Int
         album = info["Album"] as? String
