@@ -17,8 +17,22 @@ protocol LiveDataDelegate {
 }
 
 class LiveData: NSObject {
-    
+    var socket : SocketIOClient!
     var delegate:LiveDataDelegate!
+    
+    override init(){
+        super.init()
+        println("instantiating socket")
+        socket = SocketIOClient(socketURL: "https://twinjack.com") 
+        socket.on("connect", callback: { (data, ack) -> Void in
+            println("socket connected")
+            self.socket.emit("join", ["room":"mortenjust"])
+            println("joined socket room")
+        })
+
+    }
+    
+    
       func startLikesObserver(dj:Dj){
 //        var djRef = Firebase(url:"https://streamjockey.firebaseio.com/channels/\(dj.name)/nowPlaying/likes")
 //        djRef.observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
@@ -34,11 +48,19 @@ class LiveData: NSObject {
 //        djRef.observeEventType(FEventType.ChildRemoved, withBlock: { (snapshot) -> Void in
 //            self.delegate?.liveAudienceMemberDidLeave()
 //        })
+        
+        println("starting listener count listener")
+        socket.on("listener count") { (array, emitter) -> Void in
+            println("listener count changed")
+            println(array)
+            self.delegate?.liveAudienceMemberDidArrive()
+        }
     }
     
     func updateAppBadge(string:String){
         NSDockTile().showsApplicationBadge = true
         NSDockTile().badgeLabel = string
+
     }
     
     func hideAppBadge(){
@@ -50,21 +72,28 @@ class LiveData: NSObject {
 //        var djRef = Firebase(url:"https://streamjockey.firebaseio.com/channels/\(dj.name)")
 //        let data = ["isLive":false, "nowPlaying":""]
 //        djRef.updateChildValues(data)
+        
+
 
     }
     
     func trackStarted(track:Track, dj:Dj){
         var pars = ["key": "7173-cjFFSmO7rYTkQ4PobXtKuPilgzH6p6zJ6LfCaGYv1UYMA", "secret":"ncv5pxYAXmmd5hRIwPjNqugJ8BBDWD45SxxsY6VbR5adm", "artist":track.artist!, "album":track.album!, "trackName":track.name!]
 
+        println("Telling twinjack")
         Alamofire.request(Alamofire.Method.POST, "https://twinjack.com/new-song", parameters: pars).responseString { (res, urlres, string, error) -> Void in
             
-            println("Twinjack says: '\(string!)' ")
+            if string != nil {
+                println("Twinjack says: '\(string!)' ")
+                }
 
             if error != nil {
                 println("Twinjack error: '\(error)' ")
             }
         }
 
+
+        
 //
 //        var djRef = Firebase(url:"https://streamjockey.firebaseio.com/channels/\(dj.name)")
 //
@@ -90,7 +119,7 @@ class LiveData: NSObject {
             let name = myInfo!["name"]!.string!
             let utcOffset = myInfo!["utc_offset"]!.integer!
             let timeZone = myInfo!["time_zone"]!.string!
-        
+            
 //            var djRef = Firebase(url:"https://streamjockey.firebaseio.com/djs/\(dj.name)/")
 //            let data:NSDictionary = [
 //                "uid":dj.name,
