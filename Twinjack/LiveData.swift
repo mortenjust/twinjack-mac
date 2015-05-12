@@ -85,18 +85,24 @@ class LiveData: NSObject {
         var pars = ["key": "7173-cjFFSmO7rYTkQ4PobXtKuPilgzH6p6zJ6LfCaGYv1UYMA", "secret":"ncv5pxYAXmmd5hRIwPjNqugJ8BBDWD45SxxsY6VbR5adm", "artist":track.artist!, "album":track.album!, "trackName":track.name!]
 
         println("Telling twinjack")
-        Alamofire.request(Alamofire.Method.POST, "https://twinjack.com/new-song", parameters: pars).responseString { (res, urlres, string, error) -> Void in
-            
-            if string != nil {
-                println("Twinjack says: '\(string!)' ")
-                }
+        socket.emit("new song", pars)
+        
+        
+        
+//        Alamofire.request(Alamofire.Method.POST, "https://twinjack.com/new-song", parameters: pars).responseString { (res, urlres, string, error) -> Void in
+//            
+//            if string != nil {
+//                println("Twinjack says: '\(string!)' ")
+//                }
+//
+//            if error != nil {
+//                println("Twinjack error: '\(error)' ")
+//            }
+//        }
 
-            if error != nil {
-                println("Twinjack error: '\(error)' ")
-            }
-        }
 
-
+        
+        
         
 //
 //        var djRef = Firebase(url:"https://streamjockey.firebaseio.com/channels/\(dj.name)")
