@@ -14,6 +14,7 @@ protocol LiveDataDelegate {
     func liveAudienceMemberDidArrive()
     func liveAudienceMemberDidLeave()
     func liveAudienceMemberDidLike()
+    func liveAudienceCountChanged(audienceCount:Int)
 }
 
 class LiveData: NSObject {
@@ -22,8 +23,12 @@ class LiveData: NSObject {
     
     override init(){
         super.init()
+        
         println("instantiating socket")
-        socket = SocketIOClient(socketURL: "https://twinjack.com") 
+        socket = SocketIOClient(socketURL: "https://twinjack.com")
+        socket.connect()
+
+        
         socket.on("connect", callback: { (data, ack) -> Void in
             println("socket connected")
             self.socket.emit("join", ["room":"mortenjust"])
@@ -49,12 +54,20 @@ class LiveData: NSObject {
 //            self.delegate?.liveAudienceMemberDidLeave()
 //        })
         
-        println("starting listener count listener")
-        socket.on("listener count") { (array, emitter) -> Void in
+        println("starting listener count li stener")
+        socket.on("listener count") { (data, emitter) -> Void in
             println("listener count changed")
-            println(array)
+            //self.delegate?.liveAudienceMemberDidArrive()
+        }
+        
+        socket.on("listener joined") { (data, ack) -> Void in
             self.delegate?.liveAudienceMemberDidArrive()
         }
+
+        socket.on("listener left") { (data, ack) -> Void in
+            self.delegate?.liveAudienceMemberDidLeave()
+        }
+        
     }
     
     func updateAppBadge(string:String){
