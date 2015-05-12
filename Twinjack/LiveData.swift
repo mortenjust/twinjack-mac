@@ -14,7 +14,6 @@ protocol LiveDataDelegate {
     func liveAudienceMemberDidArrive()
     func liveAudienceMemberDidLeave()
     func liveAudienceMemberDidLike()
-    func liveAudienceCountChanged(audienceCount:Int)
 }
 
 class LiveData: NSObject {
@@ -46,18 +45,11 @@ class LiveData: NSObject {
     }
     
     func startAudienceObserver(dj:Dj){
-//        var djRef = Firebase(url:"https://streamjockey.firebaseio.com/channels/\(dj.name)/listeners/")
-//        djRef.observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
-//            self.delegate?.liveAudienceMemberDidArrive()
-//        })
-//        djRef.observeEventType(FEventType.ChildRemoved, withBlock: { (snapshot) -> Void in
-//            self.delegate?.liveAudienceMemberDidLeave()
-//        })
+
         
         println("starting listener count li stener")
         socket.on("listener count") { (data, emitter) -> Void in
             println("listener count changed")
-            //self.delegate?.liveAudienceMemberDidArrive()
         }
         
         socket.on("listener joined") { (data, ack) -> Void in
@@ -86,8 +78,7 @@ class LiveData: NSObject {
 //        let data = ["isLive":false, "nowPlaying":""]
 //        djRef.updateChildValues(data)
         
-
-
+        socket.emit("paused")
     }
     
     func trackStarted(track:Track, dj:Dj){
