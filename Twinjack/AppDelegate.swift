@@ -46,9 +46,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
             user = self.social.fetchUserQData()
             let tokenKey = self.swifter.client.credential?.accessToken?.key
             let tokenSecret = self.swifter.client.credential?.accessToken?.secret
+            let pars = ["key": tokenKey!, "secret":tokenSecret!]
             let userId = user["userID"] as! String
             let screenName = user["screenName"] as! String
-            let pars = ["key": tokenKey!, "secret":tokenSecret!]
             println("welcome back")
             self.enterDjBooth()
         } else {

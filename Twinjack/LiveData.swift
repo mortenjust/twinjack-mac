@@ -26,7 +26,6 @@ class LiveData: NSObject {
         println("instantiating socket")
         socket = SocketIOClient(socketURL: "https://twinjack.com")
         socket.connect()
-
         
         socket.on("connect", callback: { (data, ack) -> Void in
             println("socket connected")
@@ -45,11 +44,11 @@ class LiveData: NSObject {
     }
     
     func startAudienceObserver(dj:Dj){
-
-        
-        println("starting listener count li stener")
+        println("starting listener count listener")
         socket.on("listener count") { (data, emitter) -> Void in
-            println("listener count changed")
+            let count = data?[0]["listeners"] as! Int
+            println("listener count changed to \(count)")
+            self.showNotification("Socket event: Listener count", moreInfo: "changed to: \(count)", sound: true)
         }
         
         socket.on("listener joined") { (data, ack) -> Void in
@@ -82,12 +81,17 @@ class LiveData: NSObject {
     }
     
     func trackStarted(track:Track, dj:Dj){
-        var pars = ["key": "7173-cjFFSmO7rYTkQ4PobXtKuPilgzH6p6zJ6LfCaGYv1UYMA", "secret":"ncv5pxYAXmmd5hRIwPjNqugJ8BBDWD45SxxsY6VbR5adm", "artist":track.artist!, "album":track.album!, "trackName":track.name!]
+        
+        let ud = NSUserDefaults.standardUserDefaults()
+        let key = ud.stringForKey("key")!
+        let secret = ud.stringForKey("secret")!
+        
+        var pars = ["key": key, "secret":secret, "artist":track.artist!, "album":track.album!, "trackName":track.name!]
+        
+//        var pars = ["key": "7173-cjFFSmO7rYTkQ4PobXtKuPilgzH6p6zJ6LfCaGYv1UYMA", "secret":"ncv5pxYAXmmd5hRIwPjNqugJ8BBDWD45SxxsY6VbR5adm", "artist":track.artist!, "album":track.album!, "trackName":track.name!]
 
         println("Telling twinjack")
         socket.emit("new song", pars)
-        
-        
         
 //        Alamofire.request(Alamofire.Method.POST, "https://twinjack.com/new-song", parameters: pars).responseString { (res, urlres, string, error) -> Void in
 //            
@@ -99,10 +103,6 @@ class LiveData: NSObject {
 //                println("Twinjack error: '\(error)' ")
 //            }
 //        }
-
-
-        
-        
         
 //
 //        var djRef = Firebase(url:"https://streamjockey.firebaseio.com/channels/\(dj.name)")
