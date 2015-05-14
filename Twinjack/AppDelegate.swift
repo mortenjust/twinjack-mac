@@ -87,7 +87,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         self.djViewController = DjViewController(nibName: "DjViewController", bundle: nil)
         self.djViewController.liveData = liveData
         self.djViewController.window = window
-        self.djViewController.swifter = swifters
+        self.djViewController.swifter = swifter
         self.djViewController.dj = Dj(name: user["screenName"] as! String)
         self.window.contentView.addSubview(self.djViewController.view)
         self.djViewController.view.frame = self.window.contentView.bounds
