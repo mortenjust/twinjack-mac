@@ -14,7 +14,7 @@ import Alamofire
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDelegate {
 
     @IBOutlet weak var window: NSWindow!
-    var masterViewController : MasterViewController!
+//    var masterViewController : MasterViewController! // looks like we're not using this
     var djViewController: DjViewController!
     var loginViewController: LoginViewController!
 
@@ -83,9 +83,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         let f = window.frame
         let newFrame = CGRectMake(f.origin.x, f.origin.y, 226, 372)
         window.setFrame(newFrame, display:true, animate:true)
+        let liveData = LiveData()
         self.djViewController = DjViewController(nibName: "DjViewController", bundle: nil)
+        self.djViewController.liveData = liveData
         self.djViewController.window = window
-        self.djViewController.swifter = swifter
+        self.djViewController.swifter = swifters
         self.djViewController.dj = Dj(name: user["screenName"] as! String)
         self.window.contentView.addSubview(self.djViewController.view)
         self.djViewController.view.frame = self.window.contentView.bounds

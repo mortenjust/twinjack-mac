@@ -35,12 +35,10 @@ class MasterViewController: NSViewController, NeedSocialDelegate {
     
     
     func presentLogin(){
-        // TODO: Open the login window
         
     }
     
     func presentDjWithName(djName:String){
-        // TODO: Open the DJ window
         
         let dj = Dj(name: djName)
         var djViewController = DjViewController(nibName: "DjViewController", bundle: nil)

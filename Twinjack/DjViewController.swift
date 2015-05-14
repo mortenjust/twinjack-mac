@@ -11,7 +11,7 @@ import SwifterMac
 
 class DjViewController: NSViewController, LiveDataDelegate, TrackDelegate {
     var centerReceiver = NSDistributedNotificationCenter()
-    var liveData = LiveData()
+    var liveData : LiveData! 
     var swifter : Swifter!
     var audienceCount:Int = 0 {
         didSet {
@@ -92,7 +92,6 @@ class DjViewController: NSViewController, LiveDataDelegate, TrackDelegate {
     func populateUrlField(){
         urlField.stringValue = "twinjack.com/\(dj.name)"
     }
-    
     
     func startLikesObserver(){
         liveData.startLikesObserver(dj)

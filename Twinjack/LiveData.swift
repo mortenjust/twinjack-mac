@@ -31,16 +31,21 @@ class LiveData: NSObject {
             println("socket connected")
             self.socket.emit("join", ["room":"mortenjust"])
             println("joined socket room")
+            
+            let ud = NSUserDefaults.standardUserDefaults()
+            let key = ud.stringForKey("key")!
+            let secret = ud.stringForKey("secret")!
+            let authPars = ["key":key, "secret":secret]
+            self.socket.emit("auth", authPars)
+            
         })
 
     }
     
     
       func startLikesObserver(dj:Dj){
-//        var djRef = Firebase(url:"https://streamjockey.firebaseio.com/channels/\(dj.name)/nowPlaying/likes")
-//        djRef.observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
-//            self.delegate?.liveAudienceMemberDidLike()
-//        })
+
+        // tbd
     }
     
     func startAudienceObserver(dj:Dj){
@@ -73,79 +78,34 @@ class LiveData: NSObject {
     
     
     func trackPaused(dj:Dj){
-//        var djRef = Firebase(url:"https://streamjockey.firebaseio.com/channels/\(dj.name)")
-//        let data = ["isLive":false, "nowPlaying":""]
-//        djRef.updateChildValues(data)
-        
         socket.emit("paused")
     }
     
     func trackStarted(track:Track, dj:Dj){
         
-        let ud = NSUserDefaults.standardUserDefaults()
-        let key = ud.stringForKey("key")!
-        let secret = ud.stringForKey("secret")!
+        var pars = ["artist":track.artist!, "album":track.album!, "trackName":track.name!]
         
-        var pars = ["key": key, "secret":secret, "artist":track.artist!, "album":track.album!, "trackName":track.name!]
-        
-//        var pars = ["key": "7173-cjFFSmO7rYTkQ4PobXtKuPilgzH6p6zJ6LfCaGYv1UYMA", "secret":"ncv5pxYAXmmd5hRIwPjNqugJ8BBDWD45SxxsY6VbR5adm", "artist":track.artist!, "album":track.album!, "trackName":track.name!]
-
         println("Telling twinjack")
         socket.emit("new song", pars)
         
-//        Alamofire.request(Alamofire.Method.POST, "https://twinjack.com/new-song", parameters: pars).responseString { (res, urlres, string, error) -> Void in
-//            
-//            if string != nil {
-//                println("Twinjack says: '\(string!)' ")
-//                }
-//
-//            if error != nil {
-//                println("Twinjack error: '\(error)' ")
-//            }
-//        }
-        
-//
-//        var djRef = Firebase(url:"https://streamjockey.firebaseio.com/channels/\(dj.name)")
-//
-//        let data = ["isLive" : true, "nowPlaying" : ["artist":track.artist!,
-//            "trackName":track.name!,
-//            "album":track.album!,
-//            "duration":track.duration!,
-//            "popularity":track.popularity!,
-//            "position":track.position!,
-//            "uri":track.uri!,
-//            "timePressedPlay":NSDate.timeIntervalSinceReferenceDate()]]
-//        
-//        djRef.updateChildValues(data)
     }
     
     
     func updateProfileInfo(swifter:Swifter, dj:Dj){
-        swifter.getAccountVerifyCredentials(includeEntities: true, skipStatus: true, success: { (myInfo: Dictionary<String, JSONValue>?) -> Void in
-            
-            let profileImageUrl = myInfo!["profile_image_url"]!.string!
-            let location = myInfo!["location"]!.string!
-            let followers = myInfo!["followers_count"]!.integer!
-            let name = myInfo!["name"]!.string!
-            let utcOffset = myInfo!["utc_offset"]!.integer!
-            let timeZone = myInfo!["time_zone"]!.string!
-            
-//            var djRef = Firebase(url:"https://streamjockey.firebaseio.com/djs/\(dj.name)/")
-//            let data:NSDictionary = [
-//                "uid":dj.name,
-//                "profile":[
-//                    "profileImageUrl":profileImageUrl,
-//                    "location":location,
-//                    "followers":followers,
-//                    "name":name,
-//                    "utcOffset":utcOffset,
-//                    "timeZone":timeZone]]
-//            djRef.setValue(data)
-            
-            }) { (error) -> Void in
-                println("# error trying to update")
-                println(error)
-        }
+//        swifter.getAccountVerifyCredentials(includeEntities: true, skipStatus: true, success: { (myInfo: Dictionary<String, JSONValue>?) -> Void in
+//            
+//            let profileImageUrl = myInfo!["profile_image_url"]!.string!
+//            let location = myInfo!["location"]!.string!
+//            let followers = myInfo!["followers_count"]!.integer!
+//            let name = myInfo!["name"]!.string!
+//            let utcOffset = myInfo!["utc_offset"]!.integer!
+//            let timeZone = myInfo!["time_zone"]!.string!
+//            
+//
+//            }) { (error) -> Void in
+//                println("# error trying to update")
+//                println(error)
+//        }
     }
     
     func showNotification(title:String, moreInfo:String, sound:Bool=true) -> Void {
