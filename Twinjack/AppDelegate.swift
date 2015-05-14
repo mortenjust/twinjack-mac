@@ -80,6 +80,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
     }
     
     func enterDjBooth(){
+        
         let f = window.frame
         let newFrame = CGRectMake(f.origin.x, f.origin.y, 226, 372)
         window.setFrame(newFrame, display:true, animate:true)
