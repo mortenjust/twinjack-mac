@@ -13,14 +13,6 @@ class DjViewController: NSViewController, LiveDataDelegate, TrackDelegate {
     var centerReceiver = NSDistributedNotificationCenter()
     var liveData : LiveData! 
     var swifter : Swifter!
-    var audienceCount:Int = 0 {
-        didSet {
-            if audienceCount == 0 {
-                listenersLabel.stringValue = ""
-                likesLabel.stringValue = ""
-            }
-        }
-    }
     var dj : Dj!
     
     @IBOutlet weak var blurV: NSVisualEffectView!
@@ -118,28 +110,22 @@ class DjViewController: NSViewController, LiveDataDelegate, TrackDelegate {
         }
     }
     
-    func liveAudienceMemberDidLike() {
-        likesLabel.integerValue++
-        checkForCheers(likesLabel.integerValue, audienceCount: audienceCount)
+    func liveAudienceMemberDidLike(likeCount: Int) {
+        likesLabel.integerValue = likeCount
+//        checkForCheers(likesLabel.integerValue, audienceCount: audienceCount)
         liveData.showNotification("Someone likes this track!", moreInfo: "\(likesLabel.integerValue) total like\(pluralS(likesLabel.integerValue)) for this track")
     }
 
-    func liveAudienceMemberDidArrive() {
-        audienceCount++
-        userImage.hidden = false
-        listenersLabel.hidden = false
+    func liveAudienceMemberDidArrive(audienceCount: Int) {
         listenersLabel.integerValue = audienceCount
         liveData.showNotification("A listener just joined", moreInfo: "You have \(audienceCount) listener\(pluralS(audienceCount))", sound: false)
         liveData.updateAppBadge("\(audienceCount)")
     }
     
-    func liveAudienceMemberDidLeave() {
-        audienceCount--
+    func liveAudienceMemberDidLeave(audienceCount : Int) {
         listenersLabel.integerValue = audienceCount
         liveData.updateAppBadge("\(audienceCount)")
         if audienceCount == 0 {
-//            listenersLabel.hidden = true
-//            userImage.hidden = true
             liveData.updateAppBadge("")
             liveData.hideAppBadge()
         }
@@ -164,6 +150,11 @@ class DjViewController: NSViewController, LiveDataDelegate, TrackDelegate {
         }
     }
 
+    func appWillClose(){
+        println("App closing. Tearing down socket connection")
+        liveData.disconnectSocket()
+    }
+    
     func pausedTrack(){
         println("Pause")
         clearTrackData()

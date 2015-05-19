@@ -96,6 +96,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
     func applicationWillTerminate(aNotification: NSNotification) {
         // Insert code here to tear down your application
         if djViewController != nil {
+            
             self.djViewController.pausedTrack()
         }
     }

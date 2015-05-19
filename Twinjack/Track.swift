@@ -55,8 +55,6 @@ class Track: NSObject {
     
     init(info:[NSObject : AnyObject]){
         super.init()
-        
-        //println(info)
         name = info["Name"] as? String
         popularity = info["Popularity"] as? Int
         album = info["Album"] as? String

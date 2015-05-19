@@ -11,9 +11,9 @@ import SwifterMac
 import Alamofire
 
 protocol LiveDataDelegate {
-    func liveAudienceMemberDidArrive()
-    func liveAudienceMemberDidLeave()
-    func liveAudienceMemberDidLike()
+    func liveAudienceMemberDidArrive(audienceCount: Int)
+    func liveAudienceMemberDidLeave(audienceCount: Int)
+    func liveAudienceMemberDidLike(likeCount: Int)
 }
 
 class LiveData: NSObject {
@@ -24,8 +24,9 @@ class LiveData: NSObject {
         super.init()
         
         //({reconnection: true, reconnectionDelay: 5000});
-        socket = SocketIOClient(socketURL: "https://twinjack.com", opts: ["reconnection":true, "reconnectionDelay":5000])
-        
+        socket = SocketIOClient(socketURL: "https://twinjack.com", opts: ["reconnection":true, "reconnectionDelay":10])
+        socket.reconnects = true
+        socket.reconnectWait = 10
         socket.connect()
         
         socket.on("connect", callback: { (data, ack) -> Void in
@@ -45,7 +46,7 @@ class LiveData: NSObject {
             println("## Socket disconnected.")
             println(data)
             println("Reconnecting")
-            self.socket.reconnect()
+//            self.socket.reconnect()
         })
         
         socket.onAny { (socketEvent) -> Void in
@@ -57,12 +58,19 @@ class LiveData: NSObject {
             println(data)
         })
         
-        
+        socket.on("reconnectAttempt", callback: { (data, ack) -> Void in
+            self.socket.connect()
+        })
     }
     
     
       func startLikesObserver(dj:Dj){
         // tbd
+//        socket.on('new like with count')
+        socket.on("new like with count", callback: { (data, ack) -> Void in
+            let likes = data?[0] as! Int
+            self.delegate?.liveAudienceMemberDidLike(likes)
+        })
     }
     
     func startAudienceObserver(dj:Dj){
@@ -74,11 +82,13 @@ class LiveData: NSObject {
         }
         
         socket.on("listener joined") { (data, ack) -> Void in
-            self.delegate?.liveAudienceMemberDidArrive()
+            let audienceCount = data?[0]["listeners"] as! Int
+            self.delegate?.liveAudienceMemberDidArrive(audienceCount)
         }
 
         socket.on("listener left") { (data, ack) -> Void in
-            self.delegate?.liveAudienceMemberDidLeave()
+            let audienceCount = data?[0]["listeners"] as! Int
+            self.delegate?.liveAudienceMemberDidLeave(audienceCount)
         }
     }
     
@@ -86,6 +96,10 @@ class LiveData: NSObject {
         NSDockTile().showsApplicationBadge = true
         NSDockTile().badgeLabel = string
 
+    }
+    
+    func disconnectSocket(){
+        socket.disconnect(fast: true)
     }
     
     func hideAppBadge(){
@@ -99,7 +113,7 @@ class LiveData: NSObject {
     
     func trackStarted(track:Track, dj:Dj){
         var pars = ["artist":track.artist!, "album":track.album!, "trackName":track.name!]
-        println("Telling twinjack")
+        println("Emitting new song")
         socket.emit("new song", pars)
     }
     
