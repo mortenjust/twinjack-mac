@@ -73,7 +73,6 @@ class DjViewController: NSViewController, LiveDataDelegate, TrackDelegate {
         startAudienceObserver()
         startLikesObserver()
         wakeSpotify()
-        liveData.updateProfileInfo(swifter, dj:dj)
         lowerScrimView.wantsLayer = true
         lowerScrimView.alphaValue = 0.8
 

@@ -74,7 +74,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         loginViewController.view.frame = self.window.contentView.bounds
     }
     
-
     func loginSuccessful() { // LoginDelegate func
         dispatchLogin()
     }
@@ -96,11 +95,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
 
     func applicationWillTerminate(aNotification: NSNotification) {
         // Insert code here to tear down your application
-
         if djViewController != nil {
             self.djViewController.pausedTrack()
         }
-
     }
     
     func handleEvent(event: NSAppleEventDescriptor!, withReplyEvent: NSAppleEventDescriptor!) {

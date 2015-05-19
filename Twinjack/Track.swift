@@ -26,15 +26,7 @@ class Track: NSObject {
     var artist:String?
     var position:Int?
     var popularity:Int?
-    var uri:String? {
-        didSet {
-//            println("uri was set")
-//            getAlbumImageForUri(uri!, callback: { (image) -> Void in
-//                self.delegate!.trackAlbumImageDidChange(image)
-//            })
-        }
-    }
-    
+    var uri:String?    
     
     func getAlbumImageForUri(uri:String, callback:(image:NSImage)->Void){
         //https://api.spotify.com/v1/tracks/7BI3sWF1edzH4iyK0xbZ7l
@@ -45,7 +37,6 @@ class Track: NSObject {
         println("geting url \(url)")
         
         Alamofire.request(.GET, url, parameters: nil).response { (req, res, json, error) in
-            println("json back")
             if error != nil {
                 println("##### Trying to get album image from spotify, but got this error")
                 println(error?.debugDescription)            
@@ -53,14 +44,13 @@ class Track: NSObject {
             var subJson = SwiftyJay.JSON(data:json! as! NSData)
             if var albumImageUrl = subJson["album"]["images"][0]["url"].string {
                 Alamofire.request(.GET, albumImageUrl, parameters:nil).response { (req, res, data, error) in
-                    let albumImage = NSImage(data: data! as! NSData)
+                    if let albumImage = NSImage(data: data! as! NSData) {
                     // Mark:Callback
-                    callback(image: albumImage!)
+                        callback(image: albumImage)
+                        }
                 }
             }
-
         } // alamo
-
     }
     
     init(info:[NSObject : AnyObject]){
@@ -75,7 +65,6 @@ class Track: NSObject {
         duration = info["Duration"] as? Int
         popularity = info["Popularity"] as? Int
         uri = info["Track ID"] as? String
-        println("uri was set")
         self.getAlbumImageForUri(uri!, callback: { (image) -> Void in
             self.delegate!.trackAlbumImageDidChange(image)
         })

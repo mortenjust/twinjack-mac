@@ -23,13 +23,13 @@ class LiveData: NSObject {
     override init(){
         super.init()
         
-        println("instantiating socket")
-        socket = SocketIOClient(socketURL: "https://twinjack.com")
+        //({reconnection: true, reconnectionDelay: 5000});
+        socket = SocketIOClient(socketURL: "https://twinjack.com", opts: ["reconnection":true, "reconnectionDelay":5000])
+        
         socket.connect()
         
         socket.on("connect", callback: { (data, ack) -> Void in
             println("socket connected")
-            self.socket.emit("join", ["room":"mortenjust"])
             println("joined socket room")
             
             let ud = NSUserDefaults.standardUserDefaults()
@@ -37,14 +37,31 @@ class LiveData: NSObject {
             let secret = ud.stringForKey("secret")!
             let authPars = ["key":key, "secret":secret]
             self.socket.emit("auth", authPars)
-            
+            let screenName = ud.stringForKey("screenName")!
+            self.socket.emit("join", ["room":screenName])
         })
-
+        
+        socket.on("disconnect", callback: { (data, ack) -> Void in
+            println("## Socket disconnected.")
+            println(data)
+            println("Reconnecting")
+            self.socket.reconnect()
+        })
+        
+        socket.onAny { (socketEvent) -> Void in
+            print("[\(socketEvent.event)]")
+        }
+        
+        socket.on("error", callback: { (data, ack) -> Void in
+            println("socket error")
+            println(data)
+        })
+        
+        
     }
     
     
       func startLikesObserver(dj:Dj){
-
         // tbd
     }
     
@@ -63,7 +80,6 @@ class LiveData: NSObject {
         socket.on("listener left") { (data, ack) -> Void in
             self.delegate?.liveAudienceMemberDidLeave()
         }
-        
     }
     
     func updateAppBadge(string:String){
@@ -78,40 +94,17 @@ class LiveData: NSObject {
     
     
     func trackPaused(dj:Dj){
-        socket.emit("paused")
+        socket.emit("pause song")
     }
     
     func trackStarted(track:Track, dj:Dj){
-        
         var pars = ["artist":track.artist!, "album":track.album!, "trackName":track.name!]
-        
         println("Telling twinjack")
         socket.emit("new song", pars)
-        
-    }
-    
-    
-    func updateProfileInfo(swifter:Swifter, dj:Dj){
-//        swifter.getAccountVerifyCredentials(includeEntities: true, skipStatus: true, success: { (myInfo: Dictionary<String, JSONValue>?) -> Void in
-//            
-//            let profileImageUrl = myInfo!["profile_image_url"]!.string!
-//            let location = myInfo!["location"]!.string!
-//            let followers = myInfo!["followers_count"]!.integer!
-//            let name = myInfo!["name"]!.string!
-//            let utcOffset = myInfo!["utc_offset"]!.integer!
-//            let timeZone = myInfo!["time_zone"]!.string!
-//            
-//
-//            }) { (error) -> Void in
-//                println("# error trying to update")
-//                println(error)
-//        }
     }
     
     func showNotification(title:String, moreInfo:String, sound:Bool=true) -> Void {
         var unc = NSUserNotificationCenter.defaultUserNotificationCenter()
-//        unc.delegate=self
-        
         var notification = NSUserNotification()
         notification.title = title
         notification.informativeText = moreInfo
@@ -119,11 +112,5 @@ class LiveData: NSObject {
             notification.soundName = NSUserNotificationDefaultSoundName
         }
         unc.deliverNotification(notification)
-
-    }
-    
-    func authFirebase(){
-        
-    
     }
 }
