@@ -146,6 +146,7 @@
 /* Begin PBXFileReference section */
 		C80216401B0A103800341A46 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = ../../libraries/Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		C802164F1B0A104200341A46 /* Swifter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Swifter.xcodeproj; path = ../../../libraries/Swifter/Swifter.xcodeproj; sourceTree = "<group>"; };
+		C80216631B0C8CD300341A46 /* Twinjack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Twinjack.entitlements; sourceTree = "<group>"; };
 		C80942CB1AE02FD90065719F /* Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Test.swift; path = Twinjack/Test.swift; sourceTree = "<group>"; };
 		C80942CD1AE0304F0065719F /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = Twinjack/MyPlayground.playground; sourceTree = "<group>"; };
 		C80F66331ADF55EC00277D77 /* Twinjack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Twinjack.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -278,6 +279,7 @@
 		C80F66351ADF55EC00277D77 /* Twinjack */ = {
 			isa = PBXGroup;
 			children = (
+				C80216631B0C8CD300341A46 /* Twinjack.entitlements */,
 				C88CA8FB1AFEB11F00815E41 /* Socket */,
 				C8499B1C1AF3FD3200EA994C /* Util.swift */,
 				C85FCEA11AE0A74C0081AC10 /* openTwitterPrefs.scpt */,
@@ -443,6 +445,11 @@
 					C80F66321ADF55EC00277D77 = {
 						CreatedOnToolsVersion = 6.3;
 						DevelopmentTeam = UDGLB23X37;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 					C8D6310F1AF31F26004A8FB6 = {
 						CreatedOnToolsVersion = 6.3;
@@ -722,7 +729,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_ENTITLEMENTS = Twinjack/Twinjack.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -742,7 +750,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_ENTITLEMENTS = Twinjack/Twinjack.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

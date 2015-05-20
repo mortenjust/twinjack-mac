@@ -8,7 +8,7 @@
 
 import Cocoa
 import SwifterMac
-import Alamofire
+
 
 protocol LiveDataDelegate {
     func liveAudienceMemberDidArrive(audienceCount: Int)
@@ -24,15 +24,15 @@ class LiveData: NSObject {
         super.init()
         
         //({reconnection: true, reconnectionDelay: 5000});
-        socket = SocketIOClient(socketURL: "https://twinjack.com", opts: ["reconnection":true, "reconnectionDelay":10])
+        socket = SocketIOClient(socketURL: "https://twinjack.azurewebsites.net", opts: ["reconnection":true, "reconnectionDelay":10])
         socket.reconnects = true
         socket.reconnectWait = 10
+        
+        println("Connecting to socket room...")
         socket.connect()
         
         socket.on("connect", callback: { (data, ack) -> Void in
-            println("socket connected")
-            println("joined socket room")
-            
+            println("...socket room connected")
             let ud = NSUserDefaults.standardUserDefaults()
             let key = ud.stringForKey("key")!
             let secret = ud.stringForKey("secret")!
@@ -78,7 +78,7 @@ class LiveData: NSObject {
         socket.on("listener count") { (data, emitter) -> Void in
             let count = data?[0]["listeners"] as! Int
             println("listener count changed to \(count)")
-            self.showNotification("Socket event: Listener count", moreInfo: "changed to: \(count)", sound: true)
+           // self.showNotification("Socket event: Listener count", moreInfo: "changed to: \(count)", sound: true)
         }
         
         socket.on("listener joined") { (data, ack) -> Void in
@@ -106,14 +106,13 @@ class LiveData: NSObject {
         NSDockTile().showsApplicationBadge = false
     }
     
-    
     func trackPaused(dj:Dj){
         socket.emit("pause song")
     }
     
     func trackStarted(track:Track, dj:Dj){
-        var pars = ["artist":track.artist!, "album":track.album!, "trackName":track.name!]
-        println("Emitting new song")
+        var pars = ["artist":track.artist!, "album":track.album!, "trackName":track.name!, "position":track.position!]
+        println("Emitting new song, position: \(track.position!)")
         socket.emit("new song", pars)
     }
     

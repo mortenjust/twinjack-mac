@@ -34,8 +34,6 @@ class Track: NSObject {
         var trackId = self.uri?.stringByReplacingOccurrencesOfString("spotify:track:", withString: "")
         var url = "https://api.spotify.com/v1/tracks/\(trackId!)"
         
-        println("geting url \(url)")
-        
         Alamofire.request(.GET, url, parameters: nil).response { (req, res, json, error) in
             if error != nil {
                 println("##### Trying to get album image from spotify, but got this error")

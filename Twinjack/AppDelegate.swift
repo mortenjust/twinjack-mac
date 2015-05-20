@@ -8,7 +8,7 @@
 
 import Cocoa
 import SwifterMac
-import Alamofire
+
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDelegate {
