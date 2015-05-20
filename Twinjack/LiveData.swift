@@ -40,6 +40,16 @@ class LiveData: NSObject {
             self.socket.emit("auth", authPars)
             let screenName = ud.stringForKey("screenName")!
             self.socket.emit("join", ["room":screenName])
+            let currentVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
+            self.socket.emit("check for update", ["currentVersion":currentVersion])
+        })
+        
+        socket.on("should update", callback: { (data, ack) -> Void in
+            println(data)
+            var alert = NSAlert()
+            alert.messageText = "Attention, beta user"
+            alert.informativeText = data?[0] as? String
+            alert.runModal()
         })
         
         socket.on("disconnect", callback: { (data, ack) -> Void in
