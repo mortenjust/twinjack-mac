@@ -9,7 +9,6 @@
 import Cocoa
 import SwifterMac
 
-
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDelegate {
 
@@ -101,12 +100,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         }
     }
     
+    func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
+        return true
+    }
+    
     func handleEvent(event: NSAppleEventDescriptor!, withReplyEvent: NSAppleEventDescriptor!) {
         // twitter callback stuff
         
-        NSApplication.sharedApplication().activateIgnoringOtherApps(true)
+        window.makeKeyAndOrderFront(window)
         Swifter.handleOpenURL(NSURL(string: event.paramDescriptorForKeyword(AEKeyword(keyDirectObject))!.stringValue!)!)
-
+        NSApplication.sharedApplication().activateIgnoringOtherApps(true)
     }
 
 }

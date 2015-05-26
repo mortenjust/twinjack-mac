@@ -118,8 +118,10 @@ class DjViewController: NSViewController, LiveDataDelegate, TrackDelegate {
 
     func liveAudienceMemberDidArrive(audienceCount: Int) {
         listenersLabel.integerValue = audienceCount
-        liveData.showNotification("A listener just joined", moreInfo: "You have \(audienceCount) listener\(pluralS(audienceCount))", sound: false)
-        liveData.updateAppBadge("\(audienceCount)")
+        if audienceCount > 0 { // this event fires when the dj joins his own room. no need to notify user
+            liveData.showNotification("A listener just joined", moreInfo: "You have \(audienceCount) listener\(pluralS(audienceCount))", sound: false)
+            liveData.updateAppBadge("\(audienceCount)")
+            }
     }
     
     func liveAudienceMemberDidLeave(audienceCount : Int) {
