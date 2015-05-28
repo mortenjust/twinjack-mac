@@ -39,7 +39,6 @@ class LiveData: NSObject {
             let authPars = ["key":key, "secret":secret]
             self.socket.emit("auth", authPars)
             let screenName = ud.stringForKey("screenName")!
-            self.socket.emit("join", ["room":screenName])
             let currentVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
             self.socket.emit("check for update", ["currentVersion":currentVersion])
         })
