@@ -70,6 +70,10 @@ class LiveData: NSObject {
         socket.on("reconnectAttempt", callback: { (data, ack) -> Void in
             self.socket.connect()
         })
+        
+        socket.on("reconnect auth now", callback: { (data, ack) -> Void in
+            self.socket.reconnect()
+        })
     }
     
     
