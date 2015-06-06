@@ -24,7 +24,9 @@ class LiveData: NSObject {
         super.init()
         
         //({reconnection: true, reconnectionDelay: 5000});
-        socket = SocketIOClient(socketURL: "https://twinjack.azurewebsites.net", opts: ["reconnection":true, "reconnectionDelay":10])
+        socket = SocketIOClient(socketURL: "twinjack.azurewebsites.net", opts: ["reconnection":true, "reconnectionDelay":10])
+//        socket = SocketIOClient(socketURL: "localhost:3000", opts: ["reconnection":true, "reconnectionDelay":10])
+        
         socket.reconnects = true
         socket.reconnectWait = 10
         
@@ -73,6 +75,7 @@ class LiveData: NSObject {
         
         socket.on("reconnect auth now", callback: { (data, ack) -> Void in
             self.socket.reconnect()
+            println("Now in 'reconnect auth now'")
         })
     }
     
