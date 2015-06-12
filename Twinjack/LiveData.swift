@@ -22,11 +22,12 @@ class LiveData: NSObject {
     
     override init(){
         super.init()
+
+        let socketUrl = "twinjack.azurewebsites.net"
+//        let socketUrl = "localhost:3000"
         
-        //({reconnection: true, reconnectionDelay: 5000});
-        socket = SocketIOClient(socketURL: "twinjack.azurewebsites.net", opts: ["reconnection":true, "reconnectionDelay":10])
-//        socket = SocketIOClient(socketURL: "localhost:3000", opts: ["reconnection":true, "reconnectionDelay":10])
-        
+        socket = SocketIOClient(socketURL: socketUrl, opts: ["reconnection":true, "reconnectionDelay":10])
+
         socket.reconnects = true
         socket.reconnectWait = 10
         
@@ -41,6 +42,7 @@ class LiveData: NSObject {
             let authPars = ["key":key, "secret":secret]
             self.socket.emit("auth", authPars)
             let screenName = ud.stringForKey("screenName")!
+             //appstore edition:    self.socket.emit("join", ["room":screenName])
             let currentVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
             self.socket.emit("check for update", ["currentVersion":currentVersion])
         })
