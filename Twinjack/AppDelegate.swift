@@ -17,11 +17,31 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
     var djViewController: DjViewController!
     var loginViewController: LoginViewController!
 
+    
     var user:NSDictionary!
     var swifter = Swifter(consumerKey: "TuhRXTbnWzOHwjpLvEnQ0jFtH", consumerSecret: "sxvfBXkF0Hr3pSdDpOBLmV9HxvMtBqqY9xByBx0QJjVdWEPPCY")
     var social = Social()
 
+    @IBOutlet weak var statusItemMenu: NSMenu!
+    
+    var statusItem : NSStatusItem!
+
+    @IBAction func showWasSelected(sender: AnyObject) {
+//        window.orderFront(self)
+        window.orderFront(self)
+        window.makeKeyWindow()
+        window.orderFrontRegardless()
+    }
+    
+    @IBAction func quitWasSelected(sender: AnyObject) {
+        NSApplication.sharedApplication().terminate(self)
+    }
+    
     func applicationDidFinishLaunching(aNotification: NSNotification) {
+        statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(-1)
+        statusItem.menu = statusItemMenu
+        statusItem.image = NSImage(named: "twinjackstatus")
+        statusItem.action = Selector("showWasSelected:")
         
         window.movableByWindowBackground = true
         window.delegate = self
@@ -30,13 +50,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         window.styleMask |= NSFullSizeContentViewWindowMask;
         
         dispatchLogin()
-    
+        
         
         // twitter callback prep stuff
         NSAppleEventManager.sharedAppleEventManager().setEventHandler(self, andSelector: Selector("handleEvent:withReplyEvent:"), forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
         LSSetDefaultHandlerForURLScheme("swifter", NSBundle.mainBundle().bundleIdentifier! as NSString as CFString)
+        
+        showWasSelected(self)
     }
-    
     
     func dispatchLogin(){
         println("Chcking for token:")
@@ -78,7 +99,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
     }
     
     func enterDjBooth(){
-        
         let f = window.frame
         let newFrame = CGRectMake(f.origin.x, f.origin.y, 226, 372)
         window.setFrame(newFrame, display:true, animate:true)
@@ -100,9 +120,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         }
     }
     
-    func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
-        return true
-    }
+//    func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
+//        return false
+//    }
     
     func handleEvent(event: NSAppleEventDescriptor!, withReplyEvent: NSAppleEventDescriptor!) {
         // twitter callback stuff
@@ -110,6 +130,73 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         window.makeKeyAndOrderFront(window)
         Swifter.handleOpenURL(NSURL(string: event.paramDescriptorForKeyword(AEKeyword(keyDirectObject))!.stringValue!)!)
         NSApplication.sharedApplication().activateIgnoringOtherApps(true)
+    }
+    
+    func applicationIsInStartUpItems() -> Bool {
+        return (itemReferencesInLoginItems().existingReference != nil)
+    }
+    
+    func itemReferencesInLoginItems() -> (existingReference: LSSharedFileListItemRef?, lastReference: LSSharedFileListItemRef?) {
+        var itemUrl : UnsafeMutablePointer<Unmanaged<CFURL>?> = UnsafeMutablePointer<Unmanaged<CFURL>?>.alloc(1)
+        if let appUrl : NSURL = NSURL.fileURLWithPath(NSBundle.mainBundle().bundlePath) {
+            let loginItemsRef = LSSharedFileListCreate(
+                nil,
+                kLSSharedFileListSessionLoginItems.takeRetainedValue(),
+                nil
+                ).takeRetainedValue() as LSSharedFileListRef?
+            if loginItemsRef != nil {
+                let loginItems: NSArray = LSSharedFileListCopySnapshot(loginItemsRef, nil).takeRetainedValue() as NSArray
+                println("There are \(loginItems.count) login items")
+                let lastItemRef: LSSharedFileListItemRef = loginItems.lastObject as! LSSharedFileListItemRef
+                for var i = 0; i < loginItems.count; ++i {
+                    let currentItemRef: LSSharedFileListItemRef = loginItems.objectAtIndex(i) as! LSSharedFileListItemRef
+                    if LSSharedFileListItemResolve(currentItemRef, 0, itemUrl, nil) == noErr {
+                        if let urlRef: NSURL =  itemUrl.memory?.takeRetainedValue() {
+                            println("URL Ref: \(urlRef.lastPathComponent)")
+                            if urlRef.isEqual(appUrl) {
+                                return (currentItemRef, lastItemRef)
+                            }
+                        }
+                    } else {
+                        println("Unknown login application")
+                    }
+                }
+                //The application was not found in the startup list
+                return (nil, lastItemRef)
+            }
+        }
+        return (nil, nil)
+    }
+    
+    func toggleLaunchAtStartup() {
+        let itemReferences = itemReferencesInLoginItems()
+        let shouldBeToggled = (itemReferences.existingReference == nil)
+        let loginItemsRef = LSSharedFileListCreate(
+            nil,
+            kLSSharedFileListSessionLoginItems.takeRetainedValue(),
+            nil
+            ).takeRetainedValue() as LSSharedFileListRef?
+        if loginItemsRef != nil {
+            if shouldBeToggled {
+                if let appUrl : CFURLRef = NSURL.fileURLWithPath(NSBundle.mainBundle().bundlePath) {
+                    LSSharedFileListInsertItemURL(
+                        loginItemsRef,
+                        itemReferences.lastReference,
+                        nil,
+                        nil,
+                        appUrl,
+                        nil,
+                        nil
+                    )
+                    println("Application was added to login items")
+                }
+            } else {
+                if let itemRef = itemReferences.existingReference {
+                    LSSharedFileListItemRemove(loginItemsRef,itemRef);
+                    println("Application was removed from login items")
+                }
+            }
+        }
     }
 
 }

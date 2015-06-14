@@ -14,6 +14,8 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Twinjack" customModuleProvider="target">
             <connections>
+                <outlet property="showWasSelected" destination="vrg-F3-FFR" id="W6V-1w-hGT"/>
+                <outlet property="statusItemMenu" destination="Y9z-NS-9Qo" id="RI5-F6-4AD"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -132,6 +134,23 @@
             </userDefinedRuntimeAttributes>
             <point key="canvasLocation" x="167.5" y="266"/>
         </window>
+        <menu id="Y9z-NS-9Qo">
+            <items>
+                <menuItem title="Show" id="vrg-F3-FFR">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="showWasSelected:" target="Voe-Tx-rLC" id="N45-Lf-as0"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Quit" id="jzi-oA-JN1">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="quitWasSelected:" target="Voe-Tx-rLC" id="JpJ-r6-yuq"/>
+                    </connections>
+                </menuItem>
+            </items>
+            <point key="canvasLocation" x="-60" y="106.5"/>
+        </menu>
     </objects>
     <resources>
         <image name="blackBg" width="136" height="130"/>

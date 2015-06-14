@@ -132,7 +132,7 @@ class DjViewController: NSViewController, LiveDataDelegate, TrackDelegate {
             liveData.hideAppBadge()
         }
     }
-    
+     
     func startSpotifyObserver(){
         let spotifyObserver = self.centerReceiver.addObserverForName("com.spotify.client.PlaybackStateChanged", object: nil, queue: nil) { (note) -> Void in
             
