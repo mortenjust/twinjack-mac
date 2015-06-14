@@ -2,21 +2,11 @@
 
 import Cocoa
 
+let leg = false
 
-class T {
+let enabl = leg == true ? 1 : 0
 
-    var uri : String? {
-        didSet {
-            println("WAS")
-        }
-    }
-    
-    
-    init(){
-        uri = "hej"
-    }
-}
+let audienceCount = "1"
 
-
-var t = T()
+let listeners : String = audienceCount == "1" ? "listener" : "listeners"
 

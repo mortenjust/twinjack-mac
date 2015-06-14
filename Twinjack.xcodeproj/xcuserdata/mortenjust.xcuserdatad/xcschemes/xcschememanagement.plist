@@ -14,6 +14,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>TwinjackHelper.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>8</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -22,7 +27,57 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>C8136C8A1B2DD93C008954C0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C8136C991B2DD93D008954C0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C85D6E171B2DFB710066CED2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C85D6E291B2DFB710066CED2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>C8D6310F1AF31F26004A8FB6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C8E696941B2E00D100669016</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C8E696A61B2E00D100669016</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C8E696B81B2E00FB00669016</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C8E696C71B2E00FC00669016</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C8E696D91B2E026300669016</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C8E696E81B2E026300669016</key>
 		<dict>
 			<key>primary</key>
 			<true/>

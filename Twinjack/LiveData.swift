@@ -102,18 +102,20 @@ class LiveData: NSObject {
         socket.on("listener joined") { (data, ack) -> Void in
             let audienceCount = data?[0]["listeners"] as! Int
             self.delegate?.liveAudienceMemberDidArrive(audienceCount)
+            NSNotificationCenter.defaultCenter().postNotificationName("audienceEvent", object: self, userInfo:["audienceCount":"\(audienceCount)"])
+            
         }
 
         socket.on("listener left") { (data, ack) -> Void in
             let audienceCount = data?[0]["listeners"] as! Int
             self.delegate?.liveAudienceMemberDidLeave(audienceCount)
+            NSNotificationCenter.defaultCenter().postNotificationName("audienceEvent", object: self, userInfo:["audienceCount":"\(audienceCount)"])
         }
     }
     
     func updateAppBadge(string:String){
         NSDockTile().showsApplicationBadge = true
         NSDockTile().badgeLabel = string
-
     }
     
     func disconnectSocket(){

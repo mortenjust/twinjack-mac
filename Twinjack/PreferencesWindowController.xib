@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindowController" customModule="Twinjack" customModuleProvider="target">
+            <connections>
+                <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Twinjack" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="240" width="315" height="101"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <view key="contentView" id="se5-gp-TjO">
+                <rect key="frame" x="0.0" y="7" width="315" height="101"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f4A-Ib-JIe">
+                        <rect key="frame" x="38" y="55" width="262" height="28"/>
+                        <buttonCell key="cell" type="check" title="Start when computer starts" bezelStyle="regularSquare" imagePosition="left" inset="2" id="5gP-vd-a9Z">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <connections>
+                                <binding destination="Tee-wm-cpz" name="value" keyPath="values.startAtLogin" id="Qbx-AP-hoT"/>
+                            </connections>
+                        </buttonCell>
+                        <connections>
+                            <action selector="startAtLoginClicked:" target="-2" id="cQg-ur-XM7"/>
+                            <binding destination="Tee-wm-cpz" name="value" keyPath="values.startAtLogin" id="4pL-NU-2IA"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pCN-no-sJ8">
+                        <rect key="frame" x="55" y="20" width="245" height="34"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Most people choose this. You can stop Twinjack at any time." id="qvH-ee-Qq5">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" white="0.24799574607329847" alpha="0.84999999999999998" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
+            </connections>
+            <point key="canvasLocation" x="141.5" y="145.5"/>
+        </window>
+        <userDefaultsController representsSharedInstance="YES" id="Tee-wm-cpz"/>
+    </objects>
+</document>

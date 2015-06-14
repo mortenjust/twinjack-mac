@@ -14,8 +14,11 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Twinjack" customModuleProvider="target">
             <connections>
+                <outlet property="listenerCount" destination="S5e-2M-2Yh" id="yWa-DK-mtp"/>
+                <outlet property="listenerCountLabel" destination="S5e-2M-2Yh" id="qQ1-Kg-0n4"/>
                 <outlet property="showWasSelected" destination="vrg-F3-FFR" id="W6V-1w-hGT"/>
                 <outlet property="statusItemMenu" destination="Y9z-NS-9Qo" id="RI5-F6-4AD"/>
+                <outlet property="statusListenerCount" destination="S5e-2M-2Yh" id="9Yq-Ez-E60"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -136,12 +139,28 @@
         </window>
         <menu id="Y9z-NS-9Qo">
             <items>
-                <menuItem title="Show" id="vrg-F3-FFR">
+                <menuItem title="0 listeners" enabled="NO" id="S5e-2M-2Yh">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
+                <menuItem title="Open Twinjack" id="vrg-F3-FFR">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="showWasSelected:" target="Voe-Tx-rLC" id="N45-Lf-as0"/>
                     </connections>
                 </menuItem>
+                <menuItem title="Copy channel link" id="7dT-SH-vgP">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="copyWasSelected:" target="Voe-Tx-rLC" id="exm-zA-2Bn"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Preferences..." id="OEQ-By-uvS">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="preferencesWasSelected:" target="Voe-Tx-rLC" id="q6h-IZ-FdH"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="bEV-D5-Uls"/>
                 <menuItem title="Quit" id="jzi-oA-JN1">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -149,7 +168,7 @@
                     </connections>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="-60" y="106.5"/>
+            <point key="canvasLocation" x="-145" y="92.5"/>
         </menu>
     </objects>
     <resources>

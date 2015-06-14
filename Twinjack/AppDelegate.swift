@@ -16,15 +16,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
 //    var masterViewController : MasterViewController! // looks like we're not using this
     var djViewController: DjViewController!
     var loginViewController: LoginViewController!
-
+    var preferencesWindowController: PreferencesWindowController!
+    
+    @IBOutlet weak var listenerCountLabel: NSMenuItem!
     
     var user:NSDictionary!
     var swifter = Swifter(consumerKey: "TuhRXTbnWzOHwjpLvEnQ0jFtH", consumerSecret: "sxvfBXkF0Hr3pSdDpOBLmV9HxvMtBqqY9xByBx0QJjVdWEPPCY")
     var social = Social()
 
-    @IBOutlet weak var statusItemMenu: NSMenu!
     
+    @IBOutlet weak var statusItemMenu: NSMenu!
     var statusItem : NSStatusItem!
+    @IBOutlet weak var listenerCount: NSMenuItem!
 
     @IBAction func showWasSelected(sender: AnyObject) {
 //        window.orderFront(self)
@@ -32,6 +35,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         window.makeKeyWindow()
         window.orderFrontRegardless()
     }
+    
+    
+    
+    
+    @IBAction func preferencesWasSelected(sender: AnyObject) {
+        preferencesWindowController = PreferencesWindowController(windowNibName: "PreferencesWindowController")
+        preferencesWindowController.showWindow(sender)
+
+    }
+    
+    
+    
+    
     
     @IBAction func quitWasSelected(sender: AnyObject) {
         NSApplication.sharedApplication().terminate(self)
@@ -41,6 +57,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(-1)
         statusItem.menu = statusItemMenu
         statusItem.image = NSImage(named: "twinjackstatus")
+        statusItem.alternateImage = NSImage(named: "twinjackstatus-alternate")
         statusItem.action = Selector("showWasSelected:")
         
         window.movableByWindowBackground = true
@@ -50,13 +67,59 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         window.styleMask |= NSFullSizeContentViewWindowMask;
         
         dispatchLogin()
-        
-        
+
         // twitter callback prep stuff
         NSAppleEventManager.sharedAppleEventManager().setEventHandler(self, andSelector: Selector("handleEvent:withReplyEvent:"), forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
         LSSetDefaultHandlerForURLScheme("swifter", NSBundle.mainBundle().bundleIdentifier! as NSString as CFString)
         
+        checkForPreferences()
+        checkIfFirstRun()
         showWasSelected(self)
+        
+        startAudienceObserver()
+    }
+    
+    func startAudienceObserver(){
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "audienceCountChanged:", name: "audienceEvent", object: nil)
+    }
+
+    func audienceCountChanged(notification:NSNotification){
+        let u = notification.userInfo as! Dictionary<String,String>
+        
+        if let audienceCount = u["audienceCount"] {
+            println("now \(audienceCount)")
+            let listeners : String = audienceCount == "1" ? "listener" : "listeners"
+            listenerCountLabel.title = "\(audienceCount) \(listeners)"
+            
+            if audienceCount == "0" {
+                self.statusItem.image = NSImage(named: "twinjackstatus")
+            } else {
+                self.statusItem.image = NSImage(named: "twinjackstatus-listeners")
+                }
+            }
+    }
+    
+    func checkIfFirstRun(){
+        var ud = NSUserDefaults.standardUserDefaults()
+        var notFirstTime = ud.boolForKey("notFirstTime")
+        if !notFirstTime {
+            preferencesWasSelected(self)
+            ud.setBool(true, forKey: "notFirstTime")
+        }
+    }
+    
+    func checkForPreferences(){
+        var ud = NSUserDefaults.standardUserDefaults()
+
+        var startAtLogin = true
+        if ud.objectForKey("startAtLogin") == nil {
+            println("that was not set")
+            ud.setBool(true, forKey: "startAtLogin")
+            preferencesWindowController.startAtLoginClicked(self)
+        } else {
+            startAtLogin = ud.boolForKey("startAtLogin")
+            println("startup at login is \(startAtLogin)")
+        }
     }
     
     func dispatchLogin(){
@@ -132,72 +195,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         NSApplication.sharedApplication().activateIgnoringOtherApps(true)
     }
     
-    func applicationIsInStartUpItems() -> Bool {
-        return (itemReferencesInLoginItems().existingReference != nil)
+    
+    @IBAction func copyWasSelected(sender: AnyObject) {
+        djViewController.copyPressed(self)
     }
     
-    func itemReferencesInLoginItems() -> (existingReference: LSSharedFileListItemRef?, lastReference: LSSharedFileListItemRef?) {
-        var itemUrl : UnsafeMutablePointer<Unmanaged<CFURL>?> = UnsafeMutablePointer<Unmanaged<CFURL>?>.alloc(1)
-        if let appUrl : NSURL = NSURL.fileURLWithPath(NSBundle.mainBundle().bundlePath) {
-            let loginItemsRef = LSSharedFileListCreate(
-                nil,
-                kLSSharedFileListSessionLoginItems.takeRetainedValue(),
-                nil
-                ).takeRetainedValue() as LSSharedFileListRef?
-            if loginItemsRef != nil {
-                let loginItems: NSArray = LSSharedFileListCopySnapshot(loginItemsRef, nil).takeRetainedValue() as NSArray
-                println("There are \(loginItems.count) login items")
-                let lastItemRef: LSSharedFileListItemRef = loginItems.lastObject as! LSSharedFileListItemRef
-                for var i = 0; i < loginItems.count; ++i {
-                    let currentItemRef: LSSharedFileListItemRef = loginItems.objectAtIndex(i) as! LSSharedFileListItemRef
-                    if LSSharedFileListItemResolve(currentItemRef, 0, itemUrl, nil) == noErr {
-                        if let urlRef: NSURL =  itemUrl.memory?.takeRetainedValue() {
-                            println("URL Ref: \(urlRef.lastPathComponent)")
-                            if urlRef.isEqual(appUrl) {
-                                return (currentItemRef, lastItemRef)
-                            }
-                        }
-                    } else {
-                        println("Unknown login application")
-                    }
-                }
-                //The application was not found in the startup list
-                return (nil, lastItemRef)
-            }
-        }
-        return (nil, nil)
-    }
-    
-    func toggleLaunchAtStartup() {
-        let itemReferences = itemReferencesInLoginItems()
-        let shouldBeToggled = (itemReferences.existingReference == nil)
-        let loginItemsRef = LSSharedFileListCreate(
-            nil,
-            kLSSharedFileListSessionLoginItems.takeRetainedValue(),
-            nil
-            ).takeRetainedValue() as LSSharedFileListRef?
-        if loginItemsRef != nil {
-            if shouldBeToggled {
-                if let appUrl : CFURLRef = NSURL.fileURLWithPath(NSBundle.mainBundle().bundlePath) {
-                    LSSharedFileListInsertItemURL(
-                        loginItemsRef,
-                        itemReferences.lastReference,
-                        nil,
-                        nil,
-                        appUrl,
-                        nil,
-                        nil
-                    )
-                    println("Application was added to login items")
-                }
-            } else {
-                if let itemRef = itemReferences.existingReference {
-                    LSSharedFileListItemRemove(loginItemsRef,itemRef);
-                    println("Application was removed from login items")
-                }
-            }
-        }
-    }
 
 }
 
