@@ -55,13 +55,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
 //        NSArray *arguments = [[NSProcessInfo processInfo] arguments];
-        if let customServer : String = NSProcessInfo.processInfo().arguments[1] as? String {
+        
+        let args : NSArray = NSProcessInfo.processInfo().arguments
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("customServer")
+        if args.containsObject("-uselocalhost") {
+            var customServer = "localhost:3000"
             println("-------- Custom server: \(customServer)")
             NSUserDefaults.standardUserDefaults().setValue(customServer, forKey: "customServer")
-        }
-        
+            }
 
-        
         statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(-1)
         statusItem.menu = statusItemMenu
         statusItem.image = NSImage(named: "twinjackstatus")
@@ -123,6 +125,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         if ud.objectForKey("startAtLogin") == nil {
             println("that was not set")
             ud.setBool(true, forKey: "startAtLogin")
+            preferencesWindowController = PreferencesWindowController(windowNibName: "PreferencesWindowController")
             preferencesWindowController.startAtLoginClicked(self)
         } else {
             startAtLogin = ud.boolForKey("startAtLogin")
