@@ -11,7 +11,9 @@ import SwifterMac
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDelegate {
-
+    
+    @IBOutlet weak var copyChannelItem: NSMenuItem!
+    
     @IBOutlet weak var window: NSWindow!
 //    var masterViewController : MasterViewController! // looks like we're not using this
     var djViewController: DjViewController!
@@ -23,7 +25,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
     var user:NSDictionary!
     var swifter = Swifter(consumerKey: "TuhRXTbnWzOHwjpLvEnQ0jFtH", consumerSecret: "sxvfBXkF0Hr3pSdDpOBLmV9HxvMtBqqY9xByBx0QJjVdWEPPCY")
     var social = Social()
-
     
     @IBOutlet weak var statusItemMenu: NSMenu!
     var statusItem : NSStatusItem!
@@ -54,9 +55,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
     }
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-//        NSArray *arguments = [[NSProcessInfo processInfo] arguments];
-        
         let args : NSArray = NSProcessInfo.processInfo().arguments
+
         NSUserDefaults.standardUserDefaults().removeObjectForKey("customServer")
         if args.containsObject("-uselocalhost") {
             var customServer = "localhost:3000"
@@ -144,9 +144,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
             let userId = user["userID"] as! String
             let screenName = user["screenName"] as! String
             println("welcome back")
+            copyChannelItem.enabled = true
+            copyChannelItem.hidden = false
             self.enterDjBooth()
         } else {
             println("who are you")
+            copyChannelItem.enabled = false
+            copyChannelItem.hidden = true
             showLoginView()
         }
 }
@@ -169,6 +173,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
     }
     
     func loginSuccessful() { // LoginDelegate func
+
         dispatchLogin()
     }
     
