@@ -40,7 +40,6 @@ class DjViewController: NSViewController, LiveDataDelegate, TrackDelegate {
 
     
     override func awakeFromNib() {
-//        playCheers()
         setup()
     }
     

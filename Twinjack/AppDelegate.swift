@@ -54,6 +54,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
     }
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
+//        NSArray *arguments = [[NSProcessInfo processInfo] arguments];
+        if let customServer : String = NSProcessInfo.processInfo().arguments[1] as? String {
+            println("-------- Custom server: \(customServer)")
+            NSUserDefaults.standardUserDefaults().setValue(customServer, forKey: "customServer")
+        }
+        
+
+        
         statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(-1)
         statusItem.menu = statusItemMenu
         statusItem.image = NSImage(named: "twinjackstatus")

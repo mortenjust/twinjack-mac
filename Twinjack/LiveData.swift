@@ -22,10 +22,15 @@ class LiveData: NSObject {
     
     override init(){
         super.init()
-
-        let socketUrl = "twinjack.azurewebsites.net"
+        
+        var socketUrl = "twinjack.azurewebsites.net"
+        
+        if let customServer = NSUserDefaults.standardUserDefaults().valueForKey("customServer") as? String {
+           socketUrl = customServer
+        }
 //        let socketUrl = "localhost:3000"
         
+        println("socket url is \(socketUrl)")
         socket = SocketIOClient(socketURL: socketUrl, opts: ["reconnection":true, "reconnectionDelay":10])
 
         socket.reconnects = true
