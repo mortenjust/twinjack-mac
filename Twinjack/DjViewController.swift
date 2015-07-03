@@ -59,13 +59,14 @@ class DjViewController: NSViewController, LiveDataDelegate, TrackDelegate {
     func setup(){
         clearTrackData()
         startSpotifyObserver()
+        startItunesObserver()
         populateUrlField()
         liveData.delegate = self
         startAudienceObserver()
         startLikesObserver()
         wakeSpotify()
         lowerScrimView.wantsLayer = true
-        lowerScrimView.alphaValue = 0.8
+        lowerScrimView.alphaValue = 0.9
 
     }
     
@@ -131,6 +132,51 @@ class DjViewController: NSViewController, LiveDataDelegate, TrackDelegate {
             liveData.hideAppBadge()
         }
     }
+    
+    func isPlayable(info: [NSObject : AnyObject]) -> Bool {
+        let name = info["Name"] as! String
+
+        // if Beats
+        if NSString(string:name).containsString("Beats") {
+            return false
+        }
+        
+        // if no artist
+        if let artist = info["Artist"] as? String {
+            // ok, pass
+        } else {
+            return false
+        }
+        
+        // if player is loading
+        if NSString(string:name).containsString("Contacting Store") {
+            return false
+        }
+        return true
+    }
+    
+    func startItunesObserver(){
+        let itunesObserver =
+            self.centerReceiver.addObserverForName("com.apple.iTunes.playerInfo", object: nil, queue: nil) { (note) -> Void in
+                let info = note.userInfo!
+                let state = info["Player State"] as! String
+                
+                switch state {
+                case "Paused":
+                    self.pausedTrack()
+                case "Playing":
+                    if self.isPlayable(info){
+                        var track = Track(iTunesInfo: info)
+                        track.delegate = self
+                        self.startedTrack(track)
+                    } else {
+                        self.pausedTrack()
+                    }
+                default:
+                    println("iTunes Not playing or paused")
+                }
+        }
+    }
      
     func startSpotifyObserver(){
         let spotifyObserver = self.centerReceiver.addObserverForName("com.spotify.client.PlaybackStateChanged", object: nil, queue: nil) { (note) -> Void in
@@ -142,11 +188,11 @@ class DjViewController: NSViewController, LiveDataDelegate, TrackDelegate {
             case "Paused":
                 self.pausedTrack()
             case "Playing":
-                var track = Track(info: info)
+                var track = Track(spotifyInfo: info)
                 track.delegate = self
                 self.startedTrack(track)
             default:
-                println("Not playing or paused")
+                println("Spotify Not playing or paused")
             }
         }
     }
@@ -190,14 +236,29 @@ class DjViewController: NSViewController, LiveDataDelegate, TrackDelegate {
     func startedTrack(track:Track){
         albumImage.image = NSImage(named:"noAlbum")
         trackGotCheers = false
-        onAirLabel.stringValue = "Streaming from Spotify on"
-        artistLabel.stringValue = track.artist!
-        trackLabel.stringValue = track.name!
-        likesLabel.integerValue = 0
+
+        switch track.player! {
+        case .Itunes:
+            onAirLabel.stringValue = "Streaming from iTunes to"
+        case .Spotify:
+            onAirLabel.stringValue = "Streaming from Spotify to"
+        }
         
-        println("Play \(track.name!)")
-        liveData.trackStarted(track,
-                              dj:self.dj)
+        if let artist = track.artist {
+            artistLabel.stringValue = artist
+        }
+        else {
+            artistLabel.stringValue = ""
+        }
+        
+        if let track = track.name {
+            trackLabel.stringValue = track
+        } else {
+            trackLabel.stringValue = ""
+        }
+        
+        likesLabel.integerValue = 0
+        liveData.trackStarted(track, dj:self.dj)
     }
     
     func clearTrackData(){

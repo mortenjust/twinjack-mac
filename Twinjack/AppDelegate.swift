@@ -31,24 +31,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
     @IBOutlet weak var listenerCount: NSMenuItem!
 
     @IBAction func showWasSelected(sender: AnyObject) {
-//        window.orderFront(self)
+        makeWindowActive()
+    }
+    
+    func makeWindowActive(){
         window.orderFront(self)
         window.makeKeyWindow()
         window.orderFrontRegardless()
+        NSApp.activateIgnoringOtherApps(true)
     }
-    
-    
-    
-    
+
     @IBAction func preferencesWasSelected(sender: AnyObject) {
         preferencesWindowController = PreferencesWindowController(windowNibName: "PreferencesWindowController")
         preferencesWindowController.showWindow(sender)
-
     }
-    
-    
-    
-    
     
     @IBAction func quitWasSelected(sender: AnyObject) {
         NSApplication.sharedApplication().terminate(self)
@@ -82,7 +78,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         NSAppleEventManager.sharedAppleEventManager().setEventHandler(self, andSelector: Selector("handleEvent:withReplyEvent:"), forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
         LSSetDefaultHandlerForURLScheme("swifter", NSBundle.mainBundle().bundleIdentifier! as NSString as CFString)
         
-        checkForPreferences()
         checkIfFirstRun()
         showWasSelected(self)
         
@@ -113,7 +108,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         var ud = NSUserDefaults.standardUserDefaults()
         var notFirstTime = ud.boolForKey("notFirstTime")
         if !notFirstTime {
-            preferencesWasSelected(self)
             ud.setBool(true, forKey: "notFirstTime")
         }
     }
@@ -121,10 +115,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
     func checkForPreferences(){
         var ud = NSUserDefaults.standardUserDefaults()
 
-        var startAtLogin = true
+        var startAtLogin = false
         if ud.objectForKey("startAtLogin") == nil {
             println("that was not set")
-            ud.setBool(true, forKey: "startAtLogin")
+            ud.setBool(false, forKey: "startAtLogin")
             preferencesWindowController = PreferencesWindowController(windowNibName: "PreferencesWindowController")
             preferencesWindowController.startAtLoginClicked(self)
         } else {
@@ -134,6 +128,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
     }
     
     func dispatchLogin(){
+        
         println("Chcking for token:")
         if social.fetchUserToken() != nil {
             self.swifter.client.credential = social.fetchUserToken()
@@ -147,20 +142,22 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
             copyChannelItem.enabled = true
             copyChannelItem.hidden = false
             self.enterDjBooth()
+            checkForPreferences()
         } else {
             println("who are you")
             copyChannelItem.enabled = false
             copyChannelItem.hidden = true
             showLoginView()
         }
+        makeWindowActive()
 }
-
+    
     
     func showLoginView(){
         // change window size accordingly
-
+        makeWindowActive()
         let f = window.frame
-        let newFrame = CGRectMake(f.origin.x, f.origin.y, 270, 380)
+        let newFrame = CGRectMake(f.origin.x, f.origin.y, 397, 460)
         window.setFrame(newFrame, display:true, animate:true)
         
         loginViewController = LoginViewController(nibName: "LoginViewController", bundle: nil)
@@ -179,8 +176,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
     
     func enterDjBooth(){
         let f = window.frame
-        let newFrame = CGRectMake(f.origin.x, f.origin.y, 226, 372)
-        window.setFrame(newFrame, display:true, animate:true)
         let liveData = LiveData()
         self.djViewController = DjViewController(nibName: "DjViewController", bundle: nil)
         self.djViewController.liveData = liveData
@@ -189,6 +184,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         self.djViewController.dj = Dj(name: user["screenName"] as! String)
         self.window.contentView.addSubview(self.djViewController.view)
         self.djViewController.view.frame = self.window.contentView.bounds
+        let newFrame = CGRectMake(f.origin.x, f.origin.y, 226, 372)
+        window.setFrame(newFrame, display:true, animate:true)
+
+        makeWindowActive()
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
@@ -210,8 +209,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, LoginDeleg
         Swifter.handleOpenURL(NSURL(string: event.paramDescriptorForKeyword(AEKeyword(keyDirectObject))!.stringValue!)!)
         NSApplication.sharedApplication().activateIgnoringOtherApps(true)
     }
-    
-    
+        
     @IBAction func copyWasSelected(sender: AnyObject) {
         djViewController.copyPressed(self)
     }

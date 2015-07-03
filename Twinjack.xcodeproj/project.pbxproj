@@ -49,6 +49,7 @@
 		C88E7D351AE2F7550038AB38 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C88E7D331AE2F7550038AB38 /* LoginViewController.swift */; };
 		C88E7D361AE2F7550038AB38 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C88E7D341AE2F7550038AB38 /* LoginViewController.xib */; };
 		C8940FBB1B2DED8F00B99966 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8940FBA1B2DED8F00B99966 /* ServiceManagement.framework */; };
+		C8B301451B33F90300008302 /* RecordSpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B301441B33F90300008302 /* RecordSpinnerView.swift */; };
 		C8B9D3D41AE8C37D00927B96 /* cheers.wav in Resources */ = {isa = PBXBuildFile; fileRef = C8B9D3D31AE8C37D00927B96 /* cheers.wav */; };
 		C8D631151AF31F26004A8FB6 /* SwiftyJay.h in Headers */ = {isa = PBXBuildFile; fileRef = C8D631141AF31F26004A8FB6 /* SwiftyJay.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C8D631271AF31F26004A8FB6 /* SwiftyJay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8D631101AF31F26004A8FB6 /* SwiftyJay.framework */; };
@@ -217,6 +218,7 @@
 		C88E7D331AE2F7550038AB38 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C88E7D341AE2F7550038AB38 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		C8940FBA1B2DED8F00B99966 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
+		C8B301441B33F90300008302 /* RecordSpinnerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordSpinnerView.swift; sourceTree = "<group>"; };
 		C8B9D3D31AE8C37D00927B96 /* cheers.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cheers.wav; sourceTree = "<group>"; };
 		C8D631101AF31F26004A8FB6 /* SwiftyJay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyJay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8D631131AF31F26004A8FB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -336,6 +338,7 @@
 		C80F66351ADF55EC00277D77 /* Twinjack */ = {
 			isa = PBXGroup;
 			children = (
+				C8B301441B33F90300008302 /* RecordSpinnerView.swift */,
 				C80216631B0C8CD300341A46 /* Twinjack.entitlements */,
 				C88CA8FB1AFEB11F00815E41 /* Socket */,
 				C8499B1C1AF3FD3200EA994C /* Util.swift */,
@@ -769,6 +772,7 @@
 				C88CA9111AFEB12F00815E41 /* SocketPacket.swift in Sources */,
 				C88CA90F1AFEB12F00815E41 /* SocketIOClient.swift in Sources */,
 				C8499B1D1AF3FD3200EA994C /* Util.swift in Sources */,
+				C8B301451B33F90300008302 /* RecordSpinnerView.swift in Sources */,
 				C88E7D351AE2F7550038AB38 /* LoginViewController.swift in Sources */,
 				C88CA9141AFEB12F00815E41 /* SwiftRegex.swift in Sources */,
 				C88CA90E1AFEB12F00815E41 /* SocketFixUTF8.swift in Sources */,

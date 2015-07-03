@@ -23,7 +23,7 @@ class PreferencesWindowController: NSWindowController {
             println("Yeah, turned off")
         }
     }
-    
+
     override func windowDidLoad() {
         
         super.windowDidLoad()

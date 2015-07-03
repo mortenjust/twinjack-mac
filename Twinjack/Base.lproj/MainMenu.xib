@@ -111,17 +111,15 @@
         </menu>
         <window title="Twinjack" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES" fullSizeContentView="YES"/>
-            <windowPositionMask key="initialPositionMask" topStrut="YES"/>
-            <rect key="contentRect" x="800" y="203" width="259" height="360"/>
+            <windowPositionMask key="initialPositionMask" rightStrut="YES" topStrut="YES"/>
+            <rect key="contentRect" x="694" y="317" width="397" height="460"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
-            <value key="minSize" type="size" width="226" height="372"/>
-            <value key="maxSize" type="size" width="226" height="372"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="259" height="360"/>
+                <rect key="frame" x="0.0" y="0.0" width="397" height="460"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aHX-2p-fvH">
-                        <rect key="frame" x="-50" y="-42" width="359" height="446"/>
+                        <rect key="frame" x="-50" y="-13" width="454" height="517"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="blackBg" id="ehM-ST-fdk"/>
                     </imageView>
                 </subviews>

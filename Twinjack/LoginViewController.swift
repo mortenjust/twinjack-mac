@@ -29,9 +29,6 @@ class LoginViewController: NSViewController {
             self.social.saveUserToken(tmp!)
             println("welcome for the first time")
             
-            
-            
-            
             self.delegate.loginSuccessful()
             },failure: {
                 error in
@@ -42,12 +39,27 @@ class LoginViewController: NSViewController {
     }
     
     
-    @IBAction func twitterLogginPressed(sender: AnyObject) {
+    func showLoader(){
+        var scrimView = NSView(frame: CGRectMake(0, 0, self.view.bounds.width, self.view.bounds.height))
+        scrimView.wantsLayer = true
+        scrimView.layer?.backgroundColor = NSColor.whiteColor().CGColor
+        scrimView.alphaValue = 0.8
+        self.view.addSubview(scrimView)
         
-        loginTwitter()
+        var loaderView = NSProgressIndicator(frame: CGRectMake((self.view.bounds.width/2)-15, (self.view.bounds.height/2)-15, 30, 30))
+        loaderView.style = NSProgressIndicatorStyle.SpinningStyle
+        loaderView.startAnimation(self)
+        self.view.addSubview(loaderView)
     }
     
-    
+    @IBAction func twitterLogginPressed(sender: AnyObject) {
+        loginTwitter()
+        showLoader()
+    }
+
+    @IBAction func startAtLoginClicked(sender: AnyObject) {
+        PreferencesWindowController().startAtLoginClicked(self)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
